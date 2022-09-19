@@ -1,6 +1,15 @@
 name: GitHub Action demo
 
-on: [push, issues]
+on:
+  push:
+    branches: 
+      - main
+    paths-ignore: 
+      - .github
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron:  '15 6 ? * SUN'
 
 jobs:
   build:
@@ -8,4 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - run: echo "hello world"
+      - run: echo "Branch {github.ref}"
+      - run: echo "Event {github.event}"
+      - run: echo "Repository {github.repository}"; tree
