@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - run: echo "Branch {github.ref}"
-      - run: echo "Event {github.event}"
-      - run: echo "Repository {github.repository}"; tree
+      - run: echo "Branch ${{github.ref}}"
+      - run: echo "Event ${{github.event_name}}"
+      - run: echo "Repository ${{github.repository}}"; tree
