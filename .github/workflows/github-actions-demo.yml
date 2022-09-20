@@ -8,6 +8,11 @@ on:
       - .github
   pull_request:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: environment
+        required: true
   schedule:
     - cron:  '15 6 ? * SUN'
 
@@ -20,3 +25,45 @@ jobs:
       - run: echo "Branch ${{github.ref}}"
       - run: echo "Event ${{github.event_name}}"
       - run: echo "Repository ${{github.repository}}"; tree
+  
+  Test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' 
+    needs: build
+    environment: Test
+    steps:
+      - run: echo "Testing..."
+  
+  Load-Test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' 
+    needs: build
+    environment: Test
+    steps:
+      - run: |
+          echo "Testing..."
+          sleep 15
+
+  Production:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.environment == 'Production'
+    needs: [Test, Load-Test]
+    environment: 
+      name: Production
+      url: https://writeabout.net
+    steps:
+      - run: |
+          echo "Step 1..."
+          sleep 10
+      - run: |
+          echo "Step 2..."
+          sleep 10
+      - run: |
+          echo "Step 3..."
+          sleep 10
+      - run: |
+          echo "Step 4..."
+          sleep 10
+      - run: |
+          echo "Step 5..."
+          sleep 10
