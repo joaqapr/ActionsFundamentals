@@ -1,21 +1,13 @@
 name: Reusable workflow
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
   workflow_dispatch:
 
 jobs:
   call-workflow:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: ./.github/workflows/reusable.yml
-        with: 
-          who-to-greet: '@joaqapr'
+    uses: ./.github/workflows/reusable.yml
+    with: 
+      who-to-greet: '@joaqapr'
   
   use-output:
     runs-on: ubuntu-latest
